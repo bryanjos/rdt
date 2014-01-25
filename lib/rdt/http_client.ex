@@ -1,7 +1,7 @@
 defmodule Rdt.HTTPClient do
   	alias HTTPotion.Response
 
-	@redditApiUrl "http://www.reddit.com/api/"
+	@redditApiUrl "http://www.reddit.com/"
   	@user_agent  [ "User-agent": "rdt/0.0.1"]
 
   	def get(endpoint, headers // []) do

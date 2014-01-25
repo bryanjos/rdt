@@ -7,7 +7,7 @@ defmodule RdtParseTest do
   end
 
   test "Success Parse" do
-  	success_json = "{\"json\": {\"errors\": [], \"data\": { \"modhash\": \"modhash\", \"cookie\": \"cookie\"}}}"
+  	success_json = "{\"kind\": \"Listing\", \"data\": { \"modhash\": \"modhash\", \"cookie\": \"cookie\"}}"
   	{status, data} = Rdt.Parser.parse(success_json)
   	assert(status == :ok)
    	assert(data["modhash"] == "modhash")
