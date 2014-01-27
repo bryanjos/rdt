@@ -13,13 +13,28 @@ defmodule Rdt.Listings do
 
 		case Rdt.HTTPClient.get(url) do
 			{:ok, data} ->
-				{:ok, parseListingData(data)}
+				{:ok, parse_listing_data(data)}
 			{:error, data} ->
 				{:error, data}
 		end
 	end
 
-	defp parseListingData(data) do
+	def search(query, subreddit // "") do
+		url = "search.json?q=#{query}"
+
+		if subreddit != "" do
+			url = "r/#{subreddit}/" <> url
+		end
+
+		case Rdt.HTTPClient.get(url) do
+			{:ok, data} ->
+				{:ok, parse_listing_data(data)}
+			{:error, data} ->
+				{:error, data}
+		end
+	end
+
+	defp parse_listing_data(data) do
 		Enum.map(data["children"], &createRow(&1))
 	end
 
@@ -31,6 +46,7 @@ defmodule Rdt.Listings do
 			Submitted By: #{child["data"]["author"]}
 			Name: #{child["data"]["name"]}
 			Id: #{child["data"]["id"]}
+			/r/#{child["data"]["subreddit"]}
 			↑ #{child["data"]["ups"]}, ↓ #{child["data"]["downs"]}
 
 

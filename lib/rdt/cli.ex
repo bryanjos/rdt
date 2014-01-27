@@ -1,5 +1,19 @@
 defmodule Rdt.CLI do
 
+	@switches 	[ 
+		help:		:boolean, 	
+		hot:		:boolean,  
+		comments:	:boolean, 
+		search:		:boolean
+	]
+
+	@aliases 	[ 
+		h:	:help, 
+		lh:	:hot, 
+		c:	:comments, 
+		s:	:search
+	]
+
   def main(argv) do
     argv 
       |> parse_args 
@@ -7,14 +21,17 @@ defmodule Rdt.CLI do
   end
 
   def parse_args(argv) do
-    parse = OptionParser.parse(argv, switches: [ help: :boolean, 	hot: :boolean,  comments: :boolean],
-                                     aliases:  [ h:    :help, lh: :hot, c: :comments])
+    parse = OptionParser.parse(argv, switches: @switches ,
+                                     aliases:  @aliases)
     case  parse  do
 
     { [ help: true ], 	_,           			_ } 	-> :help
     { [ hot: true ], 	[subreddit], 			_ } 	-> {:hot, subreddit}
     { [ hot: true ], 	_, 						_ } 	-> {:hot, ""}
+    { [ search: true ], [query, subreddit], 	_ } 	-> {:search, query, subreddit}
+    { [ search: true ], [query], 				_ } 	-> {:search, query, ""}
     { [ comments: true ], [subreddit, id], 		_ } 	-> {:comments, subreddit, id}
+
     _                                  					-> :help
     end
   end
@@ -27,12 +44,17 @@ defmodule Rdt.CLI do
     -h  --help								# This message
     -lh	--hot    	?<subreddit> 			# Get hot articles (subreddit optional)
     -c	--comments  <subreddit> <id> 		# Gets a specific article and comments
+    -s	--search  	<query> ?<subreddit> 	# Search (subreddit optional)
     """
     System.halt(0)
   end
 
   def process({:hot, subreddit}) do
   	process_response(Rdt.Listings.get("hot", subreddit))
+  end
+
+  def process({:search, query, subreddit}) do
+  	process_response(Rdt.Listings.search(query, subreddit))
   end
 
   def process({:comments, subreddit, id}) do
