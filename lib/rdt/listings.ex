@@ -30,6 +30,7 @@ defmodule Rdt.Listings do
 			#{child["data"]["url"]}
 			Submitted By: #{child["data"]["author"]}
 			Name: #{child["data"]["name"]}
+			Id: #{child["data"]["id"]}
 			↑ #{child["data"]["ups"]}, ↓ #{child["data"]["downs"]}
 
 

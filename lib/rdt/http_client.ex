@@ -26,7 +26,7 @@ defmodule Rdt.HTTPClient do
 
   	defp handle_response(response) do
  	    case response do
-	      Response[body: body, status_code: status, headers: _headers ]  ->
+	      Response[body: body, status_code: _status, headers: _headers ]  ->
 	        Rdt.Parser.parse(body)
 	      _ ->
 			{:error, "An error occured"}
