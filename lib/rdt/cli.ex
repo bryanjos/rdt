@@ -65,13 +65,20 @@ defmodule Rdt.CLI do
 
   def process(:help) do
     IO.puts """
-    usage:  rdt [COMMAND] [COMMAND_PARAMETERS]
+    usage:  rdt (COMMAND) [COMMAND_PARAMETERS]
 
     commands:
     help									# This message
-    list [-c[--controversial], -h[--hot], -t[--top], -n[--new]] ?<subreddit> # Get controversial articles (subreddit optional)
-    view <subreddit> <id> 					# Gets a specific article and comments
-    search <query> ?<subreddit> 		# Search (subreddit optional)
+    list (listing) [subreddit] 				# Get controversial articles (subreddit optional)
+
+    	listing:
+    		-c, --controversial Controversial Listings
+    		-h, --hot           Hot Listings
+    		-t, --top           Top Listings
+    		-n, --new           New Listings
+
+    view (subreddit) (article_id)			# Gets a specific article and comments
+    search (query) [subreddit] 				# Search (subreddit optional)
     """
     System.halt(0)
   end
