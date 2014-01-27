@@ -1,57 +1,66 @@
 defmodule Rdt.CLI do
 
-	@switches 	[ 
-		help:			:boolean,
-		controversial: 	:boolean,  	
-		hot:			:boolean, 
-		new:			:boolean,
-		top:			:boolean,    
-		comments:		:boolean, 
-		search:			:boolean
-	]
-
-	@aliases 	[ 
-		h:	:help,
-		cl:	:controversial,  
-		hl:	:hot, 
-		nl:	:new, 
-		tl:	:top, 
-		c:	:comments, 
-		s:	:search
-	]
-
   def main(argv) do
     argv 
-      |> parse_args 
+      |> parse_argv 
       |> process
   end
 
-  def parse_args(argv) do
-    parse = OptionParser.parse(argv, switches: @switches ,
-                                     aliases:  @aliases)
+  def parse_argv(argv) do
+  	cond do
+  		length(argv) == 0 ->
+  			:help
+  		hd(argv) == "list" ->
+			parse_args({:list, tl(argv)}) 
+   		hd(argv) == "view" ->
+			parse_args({:list, tl(argv)}) 
+   		hd(argv) == "search" ->
+			parse_args({:search, tl(argv)}) 
+   		true ->
+   			:help
+  	end
+  end
+
+  defp parse_args({:list, args}) do
+    parse = OptionParser.parse(args, switches: [ controversial: :boolean, hot: :boolean, new: :boolean, top: :boolean],
+                                     aliases:  [ c: :controversial, h: :hot, n: :new, t: :top])
     case  parse  do
 
-    { [ help: true ], 	_,           			_ } 	-> :help
+	    { [ controversial: true], [subreddit], 	_ }  -> {:controversial, subreddit}
+	    { [ controversial: true ], 	_, 				_ } 	 -> {:controversial, ""}
 
-    { [ controversial: true ], 	[subreddit], 	_ } 	-> {:controversial, subreddit}
-    { [ controversial: true ], 	_, 				_ } 	-> {:controversial, ""}
+	    { [ hot: true], 	[subreddit], 			_ } 	-> {:hot, subreddit}
+	    { [ hot: true ], 	_, 						_ } 	-> {:hot, ""}
 
-    { [ hot: true ], 	[subreddit], 			_ } 	-> {:hot, subreddit}
-    { [ hot: true ], 	_, 						_ } 	-> {:hot, ""}
+	    { [ new: true], 	[subreddit], 			_ } 	-> {:new, subreddit}
+	    { [ new: true ], 	_, 						_ } 	-> {:new, ""}
 
-    { [ new: true ], 	[subreddit], 			_ } 	-> {:new, subreddit}
-    { [ new: true ], 	_, 						_ } 	-> {:new, ""}
+	    { [ top: true], 	[subreddit], 			_ } 	-> {:top, subreddit}
+	    { [ top: true ], 	_, 						_ } 	-> {:top, ""}
 
-    { [ top: true ], 	[subreddit], 			_ } 	-> {:top, subreddit}
-    { [ top: true ], 	_, 						_ } 	-> {:top, ""}
-
-    { [ search: true ], [query, subreddit], 	_ } 	-> {:search, query, subreddit}
-    { [ search: true ], [query], 				_ } 	-> {:search, query, ""}
-
-    { [ comments: true ], [subreddit, id], 		_ } 	-> {:comments, subreddit, id}
-
-    _                                  					-> :help
+	    _                                  					-> :help
     end
+  end
+
+  defp parse_args({:view, args}) do
+  	if length(args) != 2 do
+  		:help
+  	else
+  		{:comments, hd(args), List.last(args)}
+  	end
+  end
+
+  defp parse_args({:search, args}) do
+  	cond do
+  		length(args) == 0 ->
+  			:help
+  		length(args) == 1 ->
+  			{:search, hd(args), ""}
+    	length(args) == 2 ->
+  			{:search, hd(args), List.last(args)}
+  		true ->
+  			:help
+  	end
   end
 
   def process(:help) do
@@ -59,13 +68,10 @@ defmodule Rdt.CLI do
     usage:  rdt [COMMAND] [COMMAND_PARAMETERS]
 
     commands:
-    -h  --help								# This message
-    -cl	--controversial    	?<subreddit> 	# Get controversial articles (subreddit optional)
-    -hl	--hot    	?<subreddit> 			# Get hot articles (subreddit optional)
-    -nl	--new    	?<subreddit> 			# Get new articles (subreddit optional)
-    -tl	--top    	?<subreddit> 			# Get top articles (subreddit optional)
-    -c	--comments  <subreddit> <id> 		# Gets a specific article and comments
-    -s	--search  	<query> ?<subreddit> 	# Search (subreddit optional)
+    help									# This message
+    list [-c[--controversial], -h[--hot], -t[--top], -n[--new]] ?<subreddit> # Get controversial articles (subreddit optional)
+    view <subreddit> <id> 					# Gets a specific article and comments
+    search <query> ?<subreddit> 		# Search (subreddit optional)
     """
     System.halt(0)
   end

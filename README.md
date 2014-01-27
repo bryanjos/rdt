@@ -13,8 +13,8 @@ Usage:
     usage:  rdt [COMMAND] [COMMAND_PARAMETERS]
 
     commands:
-	-h  --help								# This message
-	-lh	--hot    	?<subreddit> 			# Get hot articles (subreddit optional)
-	-c	--comments  <subreddit> <id> 		# Gets a specific article and comments
-	-s	--search  	<query> ?<subreddit> 	# Search (subreddit optional)
+    help									# This message
+    list [-c[--controversial], -h[--hot], -t[--top], -n[--new]] ?<subreddit> # Get controversial articles (subreddit optional)
+    view <subreddit> <id> 					# Gets a specific article and comments
+    search <query> ?<subreddit> 		# Search (subreddit optional)
 ```
