@@ -14,7 +14,7 @@ Usage:
 
     commands:
     help									# This message
-    list (listing) [subreddit] 				# Get controversial articles (subreddit optional)
+    list (listing) [subreddit] 				# Get controversial articles
 
     	listing:
     		-c, --controversial Controversial Listings
@@ -23,5 +23,5 @@ Usage:
     		-n, --new           New Listings
 
     view (subreddit) (article_id)			# Gets a specific article and comments
-    search (query) [subreddit] 				# Search (subreddit optional)
+    search (query) [subreddit] 				# Search
 ```
