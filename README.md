@@ -16,4 +16,5 @@ Usage:
 	-h  --help								# This message
 	-lh	--hot    	?<subreddit> 			# Get hot articles (subreddit optional)
 	-c	--comments  <subreddit> <id> 		# Gets a specific article and comments
+	-s	--search  	<query> ?<subreddit> 	# Search (subreddit optional)
 ```
