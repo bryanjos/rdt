@@ -13,8 +13,7 @@ Usage:
     usage:  rdt [COMMAND] [COMMAND_PARAMETERS]
 
     commands:
-    -h  --help							# This message
-    -l  --login  <username> <password>	# Login to your reddit account
-    -m  --me 							# Get data about yourself
-    -lh	--hot    ?<subreddit> 			# Get hot links (subreddit optional)
+	-h  --help								# This message
+	-lh	--hot    	?<subreddit> 			# Get hot articles (subreddit optional)
+	-c	--comments  <subreddit> <id> 		# Gets a specific article and comments
 ```
