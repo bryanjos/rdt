@@ -5,23 +5,19 @@ defmodule Rdt.HTTPClient do
   	@user_agent  [ "User-agent": "rdt/0.0.1"]
 
   	def get(endpoint, headers // []) do
-  		response = HTTPotion.get(@redditApiUrl <> endpoint, Enum.concat(@user_agent, headers)) 
-  		handle_response(response)
+  		HTTPotion.get(@redditApiUrl <> endpoint, Enum.concat(@user_agent, headers)) |> handle_response
   	end
 
   	def post(endpoint, body // "", headers // []) do
-	    response = HTTPotion.post(@redditApiUrl <> endpoint, body, Enum.concat(@user_agent, headers))
-  		handle_response(response)
+	    HTTPotion.post(@redditApiUrl <> endpoint, body, Enum.concat(@user_agent, headers)) |> handle_response
   	end
 
   	def put(endpoint, body // "", headers // []) do
-	    response = HTTPotion.put(@redditApiUrl <> endpoint, body, Enum.concat(@user_agent, headers))
-  		handle_response(response)
+	   	HTTPotion.put(@redditApiUrl <> endpoint, body, Enum.concat(@user_agent, headers)) |> handle_response
   	end
 
   	def delete(endpoint, headers // []) do
-  		response = HTTPotion.delete(@redditApiUrl <> endpoint, Enum.concat(@user_agent, headers)) 
-  		handle_response(response)
+  		HTTPotion.delete(@redditApiUrl <> endpoint, Enum.concat(@user_agent, headers)) |> handle_response
   	end
 
   	defp handle_response(response) do

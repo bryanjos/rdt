@@ -70,28 +70,16 @@ defmodule Rdt.CLI do
     System.halt(0)
   end
 
-  def process({:hot, subreddit}) do
-  	process_response(Rdt.Listings.get("hot", subreddit))
-  end
-
-  def process({:controversial, subreddit}) do
-  	process_response(Rdt.Listings.get("controversial", subreddit))
-  end
-
-  def process({:new, subreddit}) do
-  	process_response(Rdt.Listings.get("new", subreddit))
-  end
-
-  def process({:top, subreddit}) do
-  	process_response(Rdt.Listings.get("top", subreddit))
+  def process({listing_type, subreddit}) do
+  	Rdt.Listings.get(to_string(listing_type), subreddit) |> process_response
   end
 
   def process({:search, query, subreddit}) do
-  	process_response(Rdt.Listings.search(query, subreddit))
+  	Rdt.Listings.search(query, subreddit) |> process_response
   end
 
   def process({:comments, subreddit, id}) do
-  	process_response(Rdt.Article.get(subreddit, id))
+  	Rdt.Article.get(subreddit, id) |> process_response
   end
 
   defp process_response(response) do
