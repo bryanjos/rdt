@@ -25,7 +25,7 @@ defmodule Rdt.Mixfile do
   defp deps do
     [
       {:httpotion, github: "myfreeweb/httpotion"},
-      {:jsonex, github: "marcelog/jsonex", tag: "2.0"}
+      {:json, github: "cblage/elixir-json"}
     ]
   end
 end
